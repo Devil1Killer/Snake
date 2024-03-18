@@ -33,9 +33,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	float ElementSize;
-
-	UPROPERTY(EditDefaultsOnly)
+	//BlueprintReadWrite
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float MovementSpeed;
+
+	UPROPERTY()
+	bool DelayBeforeMove;
 
 	UPROPERTY()
 	TArray<ASnakeElementBase*> SnakeElements;
@@ -51,8 +54,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
 	void AddSnakeElement(int ElementsNum = 1);
 
+	UFUNCTION(BlueprintCallable)
 	void Move();
+
+	UFUNCTION()
+	void SnakeElementOverlap(ASnakeElementBase* OverlappedElement, AActor* Other);
 
 };
