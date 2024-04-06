@@ -44,5 +44,9 @@ public:
 	void HandlePlayerVerticalInput(float value);
 	UFUNCTION()
 	void HandlePlayerHorizontalInput(float value);
+	UFUNCTION()
+	void Acceleration();
+	UFUNCTION()
+	void OffAcceleration();
 
 };

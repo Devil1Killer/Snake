@@ -43,6 +43,9 @@ void APlayerPawnBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis("Vertical", this, &APlayerPawnBase::HandlePlayerVerticalInput);
 	PlayerInputComponent->BindAxis("Horizontal", this, &APlayerPawnBase::HandlePlayerHorizontalInput);
 
+	PlayerInputComponent->BindAction("Acceleration", IE_Pressed, this, &APlayerPawnBase::Acceleration);
+	PlayerInputComponent->BindAction("Acceleration", IE_Released, this, &APlayerPawnBase::OffAcceleration);
+
 }
 
 void APlayerPawnBase::CreateSnakeActor() {
@@ -60,7 +63,7 @@ void APlayerPawnBase::HandlePlayerVerticalInput(float value) {
 
 			SnakeActor->LastMoveDirection = EMovementDirection::UP;
 			SnakeActor->DelayBeforeMove = false;
-
+			
 		}
 		else if (value < 0 && SnakeActor->LastMoveDirection != EMovementDirection::UP && SnakeActor->DelayBeforeMove == true){
 
@@ -94,6 +97,22 @@ void APlayerPawnBase::HandlePlayerHorizontalInput(float value) {
 
 }
 
+void APlayerPawnBase::Acceleration() {
 
+	if (IsValid(SnakeActor)) {
 
+		SnakeActor->SetActorTickInterval(SnakeActor->MovementSpeed / 2);
 
+	}
+
+}
+
+void APlayerPawnBase::OffAcceleration() {
+
+	if (IsValid(SnakeActor)) {
+
+		SnakeActor->SetActorTickInterval(SnakeActor->MovementSpeed * 2);
+
+	}
+
+}

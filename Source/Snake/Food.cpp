@@ -5,16 +5,13 @@
 #include "SnakeBase.h"
 #include "Math/UnrealMathUtility.h"
 #include "Bonus.h"
+#include "FoodField.h"
 
 // Sets default values
 AFood::AFood()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	Xmin = -700.f;
-	Xmax = 700.f;
-	Ymin = -1300.f;
-	Ymax = 1300.f;
 
 }
 
@@ -45,19 +42,18 @@ void AFood::Interact(AActor* Interactor, bool bIsHead) {
 
 			Snake->AddSnakeElement();
 
-			if (Chance == 1) {
+		
+			//if (Chance == 1) {
 
-				Bonus->SpeedUp(Snake);
+			//	Bonus->SpeedUp(Snake);
 
-			}
-			else if (Chance == 2) {
+			//}
+			//else if (Chance == 2) {
 
-				Bonus->FastGrowth(Snake);
+			//	Bonus->FastGrowth(Snake);
 
-			}
-			else {}
-
-			SpawnFood();
+			//}
+			//else {}
 
 			this->Destroy();
 
@@ -67,11 +63,28 @@ void AFood::Interact(AActor* Interactor, bool bIsHead) {
 
 }
 
-void AFood::SpawnFood() {
+bool AFood::SphereTraceSingleForObjects(UObject* WorldContextObject, 
+	const FVector Start, 
+	const FVector End, 
+	float Radius, 
+	const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes, 
+	bool bTraceComplex, 
+	const TArray<AActor*>& ActorsToIgnore, 
+	EDrawDebugTrace::Type DrawDebugType, 
+	FHitResult& OutHit, bool bIgnoreSelf, 
+	FLinearColor TraceColor, 
+	FLinearColor TraceHitColor, 
+	float DrawTime)
+{
 
 
-	FVector Location(FMath::RandRange(Xmin, Xmax), FMath::RandRange(Ymin, Ymax), 0);
-	FTransform NewTransform(Location);
-	GetWorld()->SpawnActor<AFood>(FoodClass, NewTransform);
+	return false;
+
 
 }
+
+
+
+
+
+

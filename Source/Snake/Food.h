@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interactable.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Food.generated.h"
 
 class ABonus;
@@ -21,23 +22,8 @@ public:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly)
 	UStaticMeshComponent* MeshComponent;
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AFood> FoodClass;
-
 	UPROPERTY()
 	ABonus* Bonus;
-
-	UPROPERTY(EditDefaultsOnly)
-	float Xmin;
-
-	UPROPERTY(EditDefaultsOnly)
-	float Xmax;
-
-	UPROPERTY(EditDefaultsOnly)
-	float Ymin;
-
-	UPROPERTY(EditDefaultsOnly)
-	float Ymax;
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,8 +35,22 @@ public:
 
 	virtual void Interact(AActor* Interactor, bool bIsHead) override;
 
-	UFUNCTION(BlueprintCallable)
-	void SpawnFood();
+	static bool SphereTraceSingleForObjects
+	(
+		UObject* WorldContextObject,
+		const FVector Start,
+		const FVector End,
+		float Radius,
+		const TArray< TEnumAsByte< EObjectTypeQuery > >& ObjectTypes,
+		bool bTraceComplex,
+		const TArray< AActor* >& ActorsToIgnore,
+		EDrawDebugTrace::Type DrawDebugType,
+		FHitResult& OutHit,
+		bool bIgnoreSelf,
+		FLinearColor TraceColor,
+		FLinearColor TraceHitColor,
+		float DrawTime
+	);
 
 };
 
