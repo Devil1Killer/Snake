@@ -35,23 +35,6 @@ public:
 
 	virtual void Interact(AActor* Interactor, bool bIsHead) override;
 
-	static bool SphereTraceSingleForObjects
-	(
-		UObject* WorldContextObject,
-		const FVector Start,
-		const FVector End,
-		float Radius,
-		const TArray< TEnumAsByte< EObjectTypeQuery > >& ObjectTypes,
-		bool bTraceComplex,
-		const TArray< AActor* >& ActorsToIgnore,
-		EDrawDebugTrace::Type DrawDebugType,
-		FHitResult& OutHit,
-		bool bIgnoreSelf,
-		FLinearColor TraceColor,
-		FLinearColor TraceHitColor,
-		float DrawTime
-	);
-
 };
 
 

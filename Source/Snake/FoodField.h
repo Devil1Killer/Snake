@@ -29,16 +29,21 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> SpawnerClass;
 
-	UPROPERTY(EditDefaultsOnly)
-	float SpawnObjectCount;
-
-	UPROPERTY(EditDefaultsOnly)
-	bool SpawnLoop;
-
-	UPROPERTY(EditDefaultsOnly)
-	float Delay;
+	UPROPERTY(EditAnywhere)
+	TArray<AActor*> FoundActors;
 
 	UFUNCTION(BlueprintCallable)
 	void SpawnActor();
+
+	FVector CheckingCollisionsWithObjects
+	(
+		float Radius,
+		const TArray<AActor*> ActorsToIgnore,
+		bool DrawDebugeContext, const int TryCount,
+		bool& bCanMove
+	) const;
+
+
+
 
 };

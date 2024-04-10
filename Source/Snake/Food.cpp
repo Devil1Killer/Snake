@@ -5,7 +5,6 @@
 #include "SnakeBase.h"
 #include "Math/UnrealMathUtility.h"
 #include "Bonus.h"
-#include "FoodField.h"
 
 // Sets default values
 AFood::AFood()
@@ -42,7 +41,6 @@ void AFood::Interact(AActor* Interactor, bool bIsHead) {
 
 			Snake->AddSnakeElement();
 
-		
 			//if (Chance == 1) {
 
 			//	Bonus->SpeedUp(Snake);
@@ -62,29 +60,3 @@ void AFood::Interact(AActor* Interactor, bool bIsHead) {
 	}
 
 }
-
-bool AFood::SphereTraceSingleForObjects(UObject* WorldContextObject, 
-	const FVector Start, 
-	const FVector End, 
-	float Radius, 
-	const TArray<TEnumAsByte<EObjectTypeQuery>>& ObjectTypes, 
-	bool bTraceComplex, 
-	const TArray<AActor*>& ActorsToIgnore, 
-	EDrawDebugTrace::Type DrawDebugType, 
-	FHitResult& OutHit, bool bIgnoreSelf, 
-	FLinearColor TraceColor, 
-	FLinearColor TraceHitColor, 
-	float DrawTime)
-{
-
-
-	return false;
-
-
-}
-
-
-
-
-
-
