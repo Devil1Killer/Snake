@@ -8,7 +8,6 @@
 #include "Engine/GameInstance.h"
 #include "Food.h"
 
-
 // Sets default values
 AFoodField::AFoodField()
 {
@@ -20,87 +19,24 @@ AFoodField::AFoodField()
 
 }
 
-// Called when the game starts or when spawned
-void AFoodField::BeginPlay()
-{
+// Called when the game starts or whe   n spawned
+void AFoodField::BeginPlay() {
 	Super::BeginPlay();
+
+	SpawnActor();
 
 }
 
 // Called every frame
-void AFoodField::Tick(float DeltaTime)
-{
+void AFoodField::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), SpawnerClass, FoundActors);
-
-	if (FoundActors.Num() <= 1000) {
-
-		SpawnActor();
-
-	}
 
 }
 
 void AFoodField::SpawnActor() {
 
-	bool bCanMove;
 	FRotator Rotation(0, 0, 0);
-	//FVector RandomLocation = UKismetMathLibrary::RandomPointInBoundingBox(GetActorLocation(), BoxSpawner->GetScaledBoxExtent());
-
-	FoundActors.Add(GetWorld()->SpawnActor<AActor>(SpawnerClass, CheckingCollisionsWithObjects(16, FoundActors, true, 10, bCanMove), Rotation));
-
-}
-
-FVector AFoodField::CheckingCollisionsWithObjects(
-	float Radius, 
-	const TArray<AActor*> ActorsToIgnore, 
-	bool DrawDebugeContext, const int TryCount, 
-	bool& bCanMove) const
-{
-
-	bCanMove = false;
-	const UWorld* World = GetWorld();
-	const  UGameInstance* GameIstance = Cast<UGameInstance>(GetGameInstance());
-	if (World == nullptr || GameIstance == nullptr) FVector::ZeroVector;
-
-	EDrawDebugTrace::Type DebugTrace = EDrawDebugTrace::None;
-	if (DrawDebugeContext) DebugTrace = EDrawDebugTrace::ForDuration;
-
-	int iterator = 0;
-	FHitResult HitResult;
-
-
-	while (iterator < TryCount) {
-
-		FVector CollisionPoint = UKismetMathLibrary::RandomPointInBoundingBox(GetActorLocation(), BoxSpawner->GetScaledBoxExtent());
-		
-		UKismetSystemLibrary::SphereTraceSingle(
-			World, 
-			CollisionPoint,
-			CollisionPoint, 
-			Radius,
-			UEngineTypes::ConvertToTraceType(ECC_Visibility),
-			true, 
-			ActorsToIgnore, 
-			DebugTrace,
-			HitResult, 
-			true, 
-			FLinearColor::Green, 
-			FLinearColor::Red, 
-			5.0f);
-
-		if (HitResult.bBlockingHit == false) {
-
-			bCanMove = true;
-			return CollisionPoint;
-
-		}	
-
-		iterator++;
-
-	}
-
-	return FVector::ZeroVector;
+	FVector RandomLocation = UKismetMathLibrary::RandomPointInBoundingBox(GetActorLocation(), BoxSpawner->GetScaledBoxExtent());
+	FoundActors.Add(GetWorld()->SpawnActor<AActor>(SpawnerClass, RandomLocation, Rotation));
 
 }

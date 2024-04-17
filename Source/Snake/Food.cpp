@@ -4,13 +4,28 @@
 #include "Food.h"
 #include "SnakeBase.h"
 #include "Math/UnrealMathUtility.h"
+#include "Kismet/GameplayStatics.h"
 #include "Bonus.h"
+#include "FoodField.h"
 
 // Sets default values
 AFood::AFood()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent = Root;
+
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh->AttachTo(Root);
+
+	Mesh->SetWorldScale3D(FVector(0.3f, 0.3f, 0.3f));
+
+	Trigger = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger"));
+	Trigger->OnComponentBeginOverlap.AddDynamic(this, &AFood::OnOverlapBegin);
+	Trigger->SetWorldScale3D(FVector(1.5f, 1.5f, 1.5f));
+	Trigger->AttachTo(Mesh);
 
 }
 
@@ -41,22 +56,59 @@ void AFood::Interact(AActor* Interactor, bool bIsHead) {
 
 			Snake->AddSnakeElement();
 
-			//if (Chance == 1) {
+			UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFoodField::StaticClass(), Foods);
 
-			//	Bonus->SpeedUp(Snake);
+			for (AActor* Food : Foods) {
 
-			//}
-			//else if (Chance == 2) {
+				AFoodField* FoodField = Cast<AFoodField>(Food);
 
-			//	Bonus->FastGrowth(Snake);
+				if (IsValid(FoodField)) {
+					
+					FoodField->SpawnActor();
 
-			//}
-			//else {}
+				}
+
+			}
 
 			this->Destroy();
 
 		}
 
 	}
+
+}
+
+void AFood::OnOverlapBegin(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+
+	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr)) {
+
+	}
+
+}
+
+void AFood::CollisionCheck() {
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFoodField::StaticClass(), Foods);
+
+	for (AActor* Food : Foods) {
+
+		AFoodField* FoodField = Cast<AFoodField>(Food);
+
+		if (IsValid(FoodField)) {
+
+			FoodField->SpawnActor();
+
+		}
+
+	}
+
+	this->Destroy();
 
 }

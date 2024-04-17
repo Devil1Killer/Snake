@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Interactable.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include <Components/BoxComponent.h>
+#include "Interactable.h"
 #include "Food.generated.h"
 
 class ABonus;
@@ -23,7 +24,19 @@ public:
 	UStaticMeshComponent* MeshComponent;
 
 	UPROPERTY()
+	TArray<AActor*> Foods;
+
+	UPROPERTY()
 	ABonus* Bonus;
+
+	UPROPERTY()
+	USceneComponent* Root;
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* Mesh;
+
+	UPROPERTY()
+	UBoxComponent* Trigger;
 
 protected:
 	// Called when the game starts or when spawned
@@ -34,6 +47,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Interact(AActor* Interactor, bool bIsHead) override;
+
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION(BlueprintCallable)
+	void CollisionCheck();
 
 };
 

@@ -33,17 +33,6 @@ public:
 	TArray<AActor*> FoundActors;
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnActor();
-
-	FVector CheckingCollisionsWithObjects
-	(
-		float Radius,
-		const TArray<AActor*> ActorsToIgnore,
-		bool DrawDebugeContext, const int TryCount,
-		bool& bCanMove
-	) const;
-
-
-
+	virtual void SpawnActor();
 
 };

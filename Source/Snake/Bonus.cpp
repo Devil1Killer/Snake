@@ -3,7 +3,6 @@
 
 #include "Bonus.h"
 #include "SnakeBase.h"
-
 // Sets default values
 ABonus::ABonus()
 {
