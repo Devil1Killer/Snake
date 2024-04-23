@@ -47,7 +47,7 @@ void AFood::Tick(float DeltaTime)
 void AFood::Interact(AActor* Interactor, bool bIsHead) {
 
 	int Chance = FMath::RandRange(0, 5);
-	Chance = 1;
+
 	if (bIsHead) {
 
 		ASnakeBase* Snake = Cast<ASnakeBase>(Interactor);
@@ -129,7 +129,7 @@ void AFood::CollisionCheck() {
 
 	}
 
-	//this->Destroy();
+	this->Destroy();
 
 }
 
