@@ -41,6 +41,9 @@ public:
 	bool DelayBeforeMove;
 
 	UPROPERTY()
+	int8 InitialNumberSnake;
+
+	UPROPERTY()
 	TArray<ASnakeElementBase*> SnakeElements;
 
 	UPROPERTY()

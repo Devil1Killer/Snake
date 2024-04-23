@@ -29,10 +29,24 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AActor> SpawnerClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> SpawnerBonusClass;
+
 	UPROPERTY(EditAnywhere)
 	TArray<AActor*> FoundActors;
 
 	UFUNCTION(BlueprintCallable)
 	virtual void SpawnActor();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void SpawnBonusActor();
+
+	FVector CheckingCollisionsWithObjects(float Radius,
+		const TArray<AActor*> ActorsToIgnore,
+		bool DrawDebugeContext, const int TryCount) const;
+
 };
+
+
+
+

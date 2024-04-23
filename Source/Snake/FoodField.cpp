@@ -35,8 +35,70 @@ void AFoodField::Tick(float DeltaTime) {
 
 void AFoodField::SpawnActor() {
 
+	bool bCanMove = true;
+
+	FRotator Rotation(0, 0, 0);
+	//FVector RandomLocation = UKismetMathLibrary::RandomPointInBoundingBox(GetActorLocation(), BoxSpawner->GetScaledBoxExtent());
+	FoundActors.Add(GetWorld()->SpawnActor<AActor>(SpawnerClass, CheckingCollisionsWithObjects(16, FoundActors, true, 100), Rotation));
+	//CheckingCollisionsWithObjects(16, FoundActors, true, 10, bCanMove)
+}
+
+void AFoodField::SpawnBonusActor() {
+
+	bool bCanMove = true;
+
 	FRotator Rotation(0, 0, 0);
 	FVector RandomLocation = UKismetMathLibrary::RandomPointInBoundingBox(GetActorLocation(), BoxSpawner->GetScaledBoxExtent());
-	FoundActors.Add(GetWorld()->SpawnActor<AActor>(SpawnerClass, RandomLocation, Rotation));
+	GetWorld()->SpawnActor<AActor>(SpawnerBonusClass, RandomLocation, Rotation);
 
 }
+
+
+FVector AFoodField::CheckingCollisionsWithObjects(
+	float Radius,
+	const TArray<AActor*> ActorsToIgnore,
+	bool DrawDebugeContext, const int TryCount) const 
+{
+
+	const UWorld* World = GetWorld();
+	const UGameInstance* GameInstance = Cast<UGameInstance>(GetGameInstance());
+
+	if (World == nullptr || GameInstance == nullptr) return FVector::ZeroVector;
+
+	EDrawDebugTrace::Type DebugTrace = EDrawDebugTrace::None;
+	if (DrawDebugeContext) DebugTrace = EDrawDebugTrace::ForDuration;
+
+	for (int Attempt = 0; Attempt < TryCount; ++Attempt) {
+
+		FVector SpawnPoint = UKismetMathLibrary::RandomPointInBoundingBox(GetActorLocation(), BoxSpawner->GetScaledBoxExtent());
+
+		// ѕровер€ем коллизии вокруг точки спавна
+		FHitResult HitResult;
+
+		bool bHit = UKismetSystemLibrary::SphereTraceSingle(
+			World,
+			SpawnPoint,
+			SpawnPoint,
+			Radius,
+			UEngineTypes::ConvertToTraceType(ECC_Visibility),
+			true,
+			ActorsToIgnore,
+			DebugTrace,
+			HitResult,
+			true,
+			FLinearColor::Green,
+			FLinearColor::Red,
+			5.0f);
+
+		if (!bHit && !HitResult.bBlockingHit) {
+
+			return SpawnPoint; // “очка свободна, возвращаем ее
+
+		}
+
+	}
+
+	return FVector::ZeroVector; // ≈сли не удалось найти свободную точку после MaxAttempts попыток
+
+}
+

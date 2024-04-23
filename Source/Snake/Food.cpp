@@ -5,7 +5,7 @@
 #include "SnakeBase.h"
 #include "Math/UnrealMathUtility.h"
 #include "Kismet/GameplayStatics.h"
-#include "Bonus.h"
+#include "PlayerPawnBase.h"
 #include "FoodField.h"
 
 // Sets default values
@@ -46,13 +46,27 @@ void AFood::Tick(float DeltaTime)
 
 void AFood::Interact(AActor* Interactor, bool bIsHead) {
 
-	int Chance = FMath::RandRange(0, 10);
-
+	int Chance = FMath::RandRange(0, 5);
+	Chance = 1;
 	if (bIsHead) {
 
 		ASnakeBase* Snake = Cast<ASnakeBase>(Interactor);
 
 		if (IsValid(Snake)) {
+
+			UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerPawnBase::StaticClass(), Pawns);
+
+			for (AActor* Paw : Pawns) {
+
+				APlayerPawnBase* Pawn = Cast<APlayerPawnBase>(Paw);
+
+				if (IsValid(Pawn)) {
+
+					Pawn->Scoring();
+
+				}
+
+			}
 
 			Snake->AddSnakeElement();
 
@@ -65,6 +79,12 @@ void AFood::Interact(AActor* Interactor, bool bIsHead) {
 				if (IsValid(FoodField)) {
 					
 					FoodField->SpawnActor();
+
+					if (Chance == 1) {
+					
+						FoodField->SpawnBonusActor();
+
+					}
 
 				}
 
@@ -86,7 +106,7 @@ void AFood::OnOverlapBegin(
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-
+	
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr)) {
 
 	}
@@ -102,13 +122,15 @@ void AFood::CollisionCheck() {
 		AFoodField* FoodField = Cast<AFoodField>(Food);
 
 		if (IsValid(FoodField)) {
-
+			
 			FoodField->SpawnActor();
 
 		}
 
 	}
 
-	this->Destroy();
+	//this->Destroy();
 
 }
+
+

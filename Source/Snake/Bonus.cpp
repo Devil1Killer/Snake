@@ -28,6 +28,7 @@ void ABonus::Tick(float DeltaTime)
 void ABonus::SpeedUp(ASnakeBase* Snake) {
 
 	Snake->SetActorTickInterval(0.2f);
+	Snake->MovementSpeed = 0.2f;
 
 }
 

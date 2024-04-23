@@ -9,8 +9,6 @@
 #include "Interactable.h"
 #include "Food.generated.h"
 
-class ABonus;
-
 UCLASS()
 class SNAKE_API AFood : public AActor, public IInteractable
 {
@@ -27,7 +25,7 @@ public:
 	TArray<AActor*> Foods;
 
 	UPROPERTY()
-	ABonus* Bonus;
+	TArray<AActor*> Pawns;
 
 	UPROPERTY()
 	USceneComponent* Root;

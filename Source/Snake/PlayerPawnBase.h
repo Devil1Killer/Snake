@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+
 #include "PlayerPawnBase.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FScore, float, NewScore);
+
 
 class UCameraComponent;
 class ASnakeBase;
@@ -17,6 +21,13 @@ class SNAKE_API APlayerPawnBase : public APawn
 public:
 	// Sets default values for this pawn's properties
 	APlayerPawnBase();
+
+
+	UPROPERTY(BlueprintAssignable)
+	FScore Score;
+
+	UPROPERTY()
+	float ScorePlayer = 0;
 
 	UPROPERTY(BlueprintReadWrite)
 	UCameraComponent* PawnCamera;
@@ -48,5 +59,9 @@ public:
 	void Acceleration();
 	UFUNCTION()
 	void OffAcceleration();
+
+
+	UFUNCTION()
+	void Scoring();
 
 };

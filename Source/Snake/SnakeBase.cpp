@@ -14,6 +14,7 @@ ASnakeBase::ASnakeBase()
 	MovementSpeed = 10.f;
 	LastMoveDirection = EMovementDirection::DOWN;
 	DelayBeforeMove = true;
+	InitialNumberSnake = 5;
 
 }
 
@@ -22,7 +23,7 @@ void ASnakeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	SetActorTickInterval(MovementSpeed);
-	AddSnakeElement(5);
+	AddSnakeElement(InitialNumberSnake);
 
 }
 
@@ -36,30 +37,20 @@ void ASnakeBase::Tick(float DeltaTime)
 
 void ASnakeBase::AddSnakeElement(int ElementsNum) {
 
-	if (ElementsNum <= 3) {
+	for (int i = 0; i < ElementsNum; i++) {
 
-		FVector NewLocation(1000, 1000, 0);
+		FVector NewLocation;
+
+		if (ElementsNum == InitialNumberSnake) NewLocation = FVector(SnakeElements.Num() * ElementSize, 0, 0);
+		else NewLocation = FVector(1000, 1000, 0);
 		FTransform NewTransform(NewLocation);
 		ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
 		NewSnakeElem->SnakeOwner = this;
 		int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
 
-	}
-	else {
+		if (ElemIndex == 0 && ElementsNum == InitialNumberSnake) {
 
-		for (int i = 0; i < ElementsNum; i++) {
-
-			FVector NewLocation(SnakeElements.Num() * ElementSize, 0, 0);
-			FTransform NewTransform(NewLocation);
-			ASnakeElementBase* NewSnakeElem = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
-			NewSnakeElem->SnakeOwner = this;
-			int32 ElemIndex = SnakeElements.Add(NewSnakeElem);
-
-			if (ElemIndex == 0) {
-
-				NewSnakeElem->SetFirstElementType();
-
-			}
+			NewSnakeElem->SetFirstElementType();
 
 		}
 
@@ -126,5 +117,4 @@ void ASnakeBase::SnakeElementOverlap(ASnakeElementBase* OverlappedElement, AActo
 	}
 
 }
-
 

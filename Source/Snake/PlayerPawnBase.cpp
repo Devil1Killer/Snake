@@ -116,3 +116,13 @@ void APlayerPawnBase::OffAcceleration() {
 	}
 
 }
+
+
+void APlayerPawnBase::Scoring() {
+
+	ScorePlayer += 100;
+
+	Score.Broadcast(ScorePlayer);
+
+}
+
